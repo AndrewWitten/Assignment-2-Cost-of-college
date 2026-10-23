@@ -17,37 +17,48 @@ CS1430_MEETINGS_PER_SEMESTER = 45
 
 def cost_per_semester(annual_cost):
     """Give back what one semester costs."""
-    return 0
+    return annual_cost / SEMESTERS_PER_YEAR
 
 
 def cost_per_month(annual_cost):
     """Give back what one month of the academic year costs."""
-    return 0
+    return annual_cost / MONTHS_PER_YEAR
 
 
 def cost_per_day(annual_cost):
     """Give back what one class day costs."""
-    return 0
+    return annual_cost / (SEMESTERS_PER_YEAR * CLASS_DAYS_PER_SEMESTER)
 
 
 def cost_per_credit(annual_cost, credits):
     """Give back what one credit costs. credits is the number taken this semester."""
-    return 0
+    return cost_per_semester(annual_cost) / credits
 
 
 def cost_per_class(annual_cost, credits):
     """Give back what one 50-minute CS 1430 class meeting costs."""
-    return 0
+    return cost_per_credit(annual_cost, credits) * CS1430_CREDITS / CS1430_MEETINGS_PER_SEMESTER
 
+def cost_of_skipped_class(annual_cost,credits, skipped):
+    """Return the cost represented by skipping CS 1430 class."""
+    return cost_per_class(annual_cost, credits) * skipped
 
 # ---- PROGRAM ----
 
 def main():
-    # Ask for the total cost for one year here.
-    # Then ask for the credits this semester.
+    annual_cost = float(input("Enter the total cost for one year: "))
+    credits = int(input("Enter the number of credits taken this semester: "))
 
     while True:
         # Show your menu here.
+        print("\nThe cost of college")
+        print("1. Cost per semester")
+        print("2. Cost per month")
+        print("3. Cost per day")
+        print("4. Cost per credit")
+        print("5. Cost per class")
+        print("6. Worth it?")
+        print("Q. Quit")
 
         choice = input("Choose an option: ")
 
@@ -55,7 +66,27 @@ def main():
             break
 
         # Add a branch for each menu option here.
-
+        elif choice == "1":
+            semester = cost_per_semester(annual_cost)
+            print(f"Cost per semester: ${semester:.2f}")
+        elif choice == "2":
+            month = cost_per_month(annual_cost)
+            print(f"Cost per month: ${month:.2f}")
+        elif choice == "3":
+            day = cost_per_day(annual_cost)
+            print(f"Cost per day: ${day:.2f}")
+        elif choice == "4":
+            credit = cost_per_credit(annual_cost, credits)
+            print(f"Cost per credit: ${credit:.2f}")
+        elif choice == "5":
+            class_cost = cost_per_class(annual_cost, credits)
+            print(f"Cost per class: ${class_cost:.2f}")
+        elif choice == "6":
+            skipped = int(input("How many CS 1430 classes did you miss? "))
+            skipped_cost = cost_of_skipped_class(annual_cost, credits, skipped)
+            print(f"The cost of skipped classes is: ${skipped_cost:.2f}")
+        else:
+            print("Invalid option, please enter 1-6 or Q to quit.")
 
 # ---- LAUNCH: do not change ----
 if __name__ == "__main__":
